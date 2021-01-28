@@ -13,3 +13,12 @@ func GetAllArticles(w http.ResponseWriter, r *http.Request) {
 	}
 	json.NewEncoder(w).Encode(articles)
 }
+
+func NewArticle(w http.ResponseWriter, r *http.Request) {
+	var p types.Article
+	err := json.NewDecoder(r.Body).Decode(&p)
+	if err != nil {
+		http.Error(w, err.Error(), http.StatusBadRequest)
+		return
+	}
+}

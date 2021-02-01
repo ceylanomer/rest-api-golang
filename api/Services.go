@@ -2,16 +2,21 @@ package api
 
 import (
 	"encoding/json"
+	"gorm.io/driver/sqlserver"
+	"gorm.io/gorm"
 	"net/http"
 	"rest-api-golang/types"
 )
 
 func GetAllArticles(w http.ResponseWriter, r *http.Request) {
-	articles := types.Articles{
-		types.NewArticle("TestHeader", "TestAuthor", 5),
-		types.NewArticle("TestHeader", "TestAuthor", 4),
+	connString := "sqlserver://sa:Sa123456@localhost:1433?database=goDB"
+	db, err := gorm.Open(sqlserver.Open(connString), &gorm.Config{})
+	if err != nil {
+		panic("failed to connect database")
 	}
-	json.NewEncoder(w).Encode(articles)
+	var article types.Article
+	db.First(&article, 1)
+	json.NewEncoder(w).Encode(article)
 }
 
 func NewArticle(w http.ResponseWriter, r *http.Request) {

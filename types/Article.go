@@ -1,6 +1,9 @@
 package types
 
+import "gorm.io/gorm"
+
 type Article struct {
+	gorm.Model
 	Header    string
 	Author    string
 	PageCount int
